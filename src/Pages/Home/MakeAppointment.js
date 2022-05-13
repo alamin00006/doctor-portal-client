@@ -3,7 +3,7 @@ import doctor from '../../assets/images/doctor.png'
 import appointment from '../../assets/images/appointment.png'
 import PrimaryButton from '../Shared/PrimaryButton';
 
-const Appointment = () => {
+const MakeAppointment = () => {
     return (
         <section
         style={{
@@ -25,4 +25,4 @@ const Appointment = () => {
     );
 };
 
-export default Appointment;
+export default MakeAppointment;

@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 const Navber = () => {
     const menuver = <>
          <li><Link to ="/">Home</Link></li>
-        <li><Link to ="/Apointment">Apointment</Link></li>
-        <li><Link to ="/Reviwes">Reviwes</Link></li>
+        <li><Link to ="/appointment">Apointment</Link></li>       
+         <li><Link to ="/Reviwes">Reviwes</Link></li>
         <li><Link to ="/Contact">Contact</Link></li>
         <li><Link to ="/about">About</Link></li>
         <li><Link to ="/Login">Login</Link></li>
