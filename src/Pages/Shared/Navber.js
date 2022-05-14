@@ -12,7 +12,7 @@ const Navber = () => {
          <li><Link to ="/Reviwes">Reviwes</Link></li>
         <li><Link to ="/Contact">Contact</Link></li>
         <li><Link to ="/about">About</Link></li>
-        <li>{user? <button onClick={() => signOut(auth)} class="btn btn-active btn-ghost">SignOut</button> : <Link to ="/Login">Login</Link>}</li>
+        <li>{user? <button onClick={() => signOut(auth)} className="btn btn-active btn-ghost">SignOut</button> : <Link to ="/Login">Login</Link>}</li>
     </>
     return (
         <div>
