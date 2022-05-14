@@ -1,47 +1,72 @@
 import React from 'react';
 import auth from '../../firebase.init';
-import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
 import Loding from '../Shared/Loding';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-
-const Login = () => {
-
+import { Link, useNavigate } from 'react-router-dom';
+const SignUp = () => {
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [
-      signInWithEmailAndPassword,
-      user,
-      loading,
-      error,
-    ] = useSignInWithEmailAndPassword(auth);
+        createUserWithEmailAndPassword,
+        user,
+        loading,
+        error,
+      ] = useCreateUserWithEmailAndPassword(auth);
 
-    const navigate = useNavigate();
-    const location = useLocation();
-    let from = location.state?.from?.pathname || "/";
-
-if(gUser||user){
-  navigate(from, { replace: true });
+      const [updateProfile, updating, uError] = useUpdateProfile(auth);
+const navigate = useNavigate()
+if(gUser){
+    console.log(gUser)
 }
-if( loading || gLoading){
+if( loading || gLoading || updating){
   return <Loding></Loding>
 }
 let singInError;
-if(error || gError){
-  singInError = <p className='text-red-500'>{error?.message} || {gError?.message}</p>
+if(error || gError || uError){
+  singInError = <p className='text-red-500'>{error?.message} || {gError?.message} || {uError?.message}</p>
 }
 
-const onSubmit = data =>{
+const onSubmit = async data =>{
 console.log(data);
-signInWithEmailAndPassword(data.email, data.password)
+await createUserWithEmailAndPassword(data.email, data.password);
+await updateProfile({ displayName: data.name});
+navigate('/appointment')
 };
+    
+    
+    
     return (
-   <div className='flex justify-center items-center h-screen'>
+        <div className='flex justify-center items-center h-screen'>
             <div class="card w-96 bg-base-100 shadow-xl">
   <div class="card-body">
-    <h2 class="text-center text-3xl font-bold">Login</h2>
+    <h2 class="text-center text-3xl font-bold">Sign Up</h2>
 
     <form onSubmit={handleSubmit(onSubmit)}>
+
+    <div class="form-control w-full max-w-xs">
+  <label class="label">
+    <span class="label-text">Name</span>
+      </label>
+  <input 
+ 
+  {...register("name", {
+
+    required:{
+        value: true,
+        message:'Name is required'
+    }
+   
+  })}
+  type="name" placeholder="Enter Your Name" class="input input-bordered w-full max-w-xs" />
+  <label class="label">
+  {errors.name?.type === 'required' && <span class="label-text-alt text-red-500">{errors.name.message}</span>}
+ 
+
+    
+    
+  </label>
+</div>
 
     <div class="form-control w-full max-w-xs">
   <label class="label">
@@ -97,9 +122,9 @@ signInWithEmailAndPassword(data.email, data.password)
   </label>
 </div>
       {singInError}
-      <input className='btn text-center w-full max-w-xs' type="submit"  value='Login'/>
+      <input className='btn text-center w-full max-w-xs' type="submit"  value='Sign Up'/>
     </form>
-    <p>New to Doctor Portal? <Link className='text-primary' to="/signup"><small>Create New Account</small></Link></p>
+    <p>Already have a Account? <Link className='text-primary' to="/login"><small>Please Login</small></Link></p>
     <div class="divider">OR</div>
     <button onClick={() => signInWithGoogle()} class="btn btn-outline">Singn In with Google</button>
   </div>
@@ -108,4 +133,4 @@ signInWithEmailAndPassword(data.email, data.password)
     );
 };
 
-export default Login;
+export default SignUp;
