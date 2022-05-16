@@ -4,6 +4,7 @@ import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfil
 import { useForm } from "react-hook-form";
 import Loding from '../Shared/Loding';
 import { Link, useNavigate } from 'react-router-dom';
+import useToken from '../../hooks/useToken';
 const SignUp = () => {
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
     const { register, formState: { errors }, handleSubmit } = useForm();
@@ -16,8 +17,9 @@ const SignUp = () => {
 
       const [updateProfile, updating, uError] = useUpdateProfile(auth);
 const navigate = useNavigate()
-if(gUser){
-    console.log(gUser)
+const [token] = useToken(user ||gUser)
+if(token){
+    navigate('/appointment')
 }
 if( loading || gLoading || updating){
   return <Loding></Loding>
@@ -31,7 +33,7 @@ const onSubmit = async data =>{
 console.log(data);
 await createUserWithEmailAndPassword(data.email, data.password);
 await updateProfile({ displayName: data.name});
-navigate('/appointment')
+
 };
     
     
