@@ -17,6 +17,7 @@ const MyAppointment = () => {
           }
         })
         .then(res => {
+          console.log('res', res)
           if(res.status === 401 || res.status ===403){
             navigate('/');
            
@@ -24,7 +25,9 @@ const MyAppointment = () => {
         return res.json()
       }
         )
-        .then(data =>setAppointments(data))
+        .then(data =>{
+          setAppointments(data)
+        })
        }
     }, [user])
     return (

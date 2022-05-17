@@ -17,6 +17,7 @@ const Login = () => {
       error,
     ] = useSignInWithEmailAndPassword(auth);
     const [token] = useToken(user ||gUser)
+    
     const navigate = useNavigate();
     const location = useLocation();
     let from = location.state?.from?.pathname || "/";
