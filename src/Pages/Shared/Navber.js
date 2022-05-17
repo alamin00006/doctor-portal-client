@@ -5,6 +5,11 @@ import { Link } from 'react-router-dom';
 import auth from '../../firebase.init';
 
 const Navber = () => {
+
+  const logOut = () =>{
+    signOut(auth)
+    localStorage.removeItem('accessToken')
+  }
   const [user, loading, error] = useAuthState(auth);
     const menuver = <>
          <li><Link to ="/">Home</Link></li>
@@ -14,8 +19,10 @@ const Navber = () => {
         <li><Link to ="/about">About</Link></li>
 
         {user && <li><Link to ="/dashboard">Dashboard</Link></li>}
+        
         <li>{user? <button 
-          onClick={() => signOut(auth)} className="btn btn-active btn-ghost">SignOut</button> : 
+          onClick={logOut} 
+          className="btn btn-active btn-ghost">SignOut</button> : 
           <Link to ="/Login">Login</Link>}</li>
     </>
     return (
