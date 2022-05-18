@@ -1,9 +1,15 @@
 import React from 'react';
 import {useQuery} from 'react-query';
 import Loding from '../Shared/Loding';
+import RowUser from './RowUser';
 
 const User = () => {
-    const {data: users, isLoading} = useQuery('users', () => fetch('http://localhost:5000/user').then(res =>res.json()))
+    const {data: users, isLoading, refetch} = useQuery('users', () => fetch('http://localhost:5000/user',{
+      method:'GET',
+      headers:{
+        authorization:`Bearer ${localStorage.getItem('accessToken')}`
+      }
+    }).then(res =>res.json()))
     if(isLoading){
       return  <Loding></Loding>
     }
@@ -22,12 +28,10 @@ const User = () => {
       </tr>
     </thead>
     <tbody>
-        {users.map((user, index) =><tr key={user._id}>
-        <th>{index + 1}</th>
-        <td>{user.email}</td>
-        <td>Quality Control Specialist</td>
-        <td>Blue</td>
-      </tr>)}
+        {users.map((user, index) =><RowUser 
+        key={user._id} user={user} index={index} refetch={refetch}>
+
+        </RowUser>)}
     </tbody>
   </table>
 </div>
